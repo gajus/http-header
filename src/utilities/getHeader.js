@@ -1,17 +1,25 @@
 // @flow
 
 import type {
-  HeadersType
+  HeaderNameType,
+  HeadersType,
+  HeaderValueType
 } from '../types';
 import {
   validateName
 } from '../validators';
-import findHeaderName from './findHeaderName';
+import {
+  HeaderNotFoundError
+} from '../errors';
+import hasHeader from './hasHeader';
+import getHeaderName from './getHeaderName';
 
-export default (headers: HeadersType, name: string): string | null => {
+export default (headers: HeadersType, name: HeaderNameType): HeaderValueType => {
   validateName(name);
 
-  const caseSensitiveName = findHeaderName(headers, name);
+  if (!hasHeader(headers, name)) {
+    throw new HeaderNotFoundError(name);
+  }
 
-  return caseSensitiveName ? String(headers[caseSensitiveName]) : null;
+  return String(headers[getHeaderName(headers, name)]);
 };

@@ -1,6 +1,7 @@
 // @flow
 
 import type {
+  HeaderNameType,
   HeadersType,
   HeaderValueType
 } from '../types';
@@ -9,15 +10,15 @@ import {
   validateValue
 } from '../validators';
 import hasHeader from './hasHeader';
-import findHeaderName from './findHeaderName';
+import getHeaderName from './getHeaderName';
 
-export default (headers: HeadersType, name: string, value: HeaderValueType): HeadersType => {
+export default (headers: HeadersType, name: HeaderNameType, value: HeaderValueType): HeadersType => {
   validateName(name);
   validateValue(value);
 
   const headerIsPresent = hasHeader(headers, name);
 
-  const targetName = headerIsPresent ? findHeaderName(headers, name) : name;
+  const targetName = headerIsPresent ? getHeaderName(headers, name) : name;
 
   return {
     ...headers,

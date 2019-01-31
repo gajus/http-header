@@ -1,15 +1,21 @@
 // @flow
 
 import type {
+  HeaderNameType,
   HeadersType
 } from '../types';
 import {
   validateName
 } from '../validators';
-import findHeaderName from './findHeaderName';
 
-export default (headerCollection: HeadersType, name: string): boolean => {
+export default (headers: HeadersType, name: HeaderNameType): boolean => {
   validateName(name);
 
-  return Boolean(findHeaderName(headerCollection, name));
+  const headerNames = Object.keys(headers);
+
+  const headerIndex = headerNames.findIndex((strawHeaderName) => {
+    return strawHeaderName.toLowerCase() === name.toLowerCase();
+  });
+
+  return headerIndex !== -1;
 };

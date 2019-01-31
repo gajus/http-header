@@ -11,10 +11,48 @@ Utilities for working with HTTP headers.
 ## API
 
 ```js
-deleteHeader(headers: HeadersType, name: string) => HeadersType;
-findHeaderName(headers: HeadersType, name: string) => string | null;
-getHeader(headers: HeadersType, name: string) => string | null;
-hasHeader(headers: HeadersType, name: string) => boolean;
-setHeader(headers: HeadersType, name: string, value: string) => HeadersType;
+import {
+  deleteHeader,
+  getHeader,
+  getHeaderName,
+  hasHeader,
+  HeaderNotFoundError,
+  InvalidHeaderNameError,
+  InvalidHeaderValueError,
+  setHeader,
+  setHeaderName
+} from 'http-header';
+import type {
+  HeaderNameType,
+  HeadersType,
+  HeaderValueType
+} from 'http-header';
+
+deleteHeader(headers: HeadersType, name: HeaderNameType) => HeadersType;
+getHeader(headers: HeadersType, name: HeaderNameType) => HeaderValueType;
+getHeaderName(headers: HeadersType, name: HeaderNameType) => HeaderNameType;
+hasHeader(headers: HeadersType, name: HeaderNameType) => boolean;
+setHeader(headers: HeadersType, name: HeaderNameType, value: HeaderValueType) => HeadersType;
+setHeaderName(headers: HeadersType, oldName: HeaderNameType, newName: HeaderNameType) => HeadersType;
+
+```
+
+### Behaviour
+
+#### `HeaderNotFoundError` error
+
+`getHeader` and `getHeaderName` throw `HeaderNotFoundError` if the specified header cannot be found.
+
+Use `hasHeader` to check if the header exists before using `getHeader` or `getHeaderName`, e.g.
+
+```js
+import {
+  hasHeader,
+  getHeader
+} from 'http-header';
+
+if (hasHeader('Content-Type')) {
+  getHeader('Content-Type');
+}
 
 ```

@@ -1,13 +1,17 @@
 // @flow
 
 import type {
+  HeaderNameType,
   HeadersType
 } from '../types';
 import {
   validateName
 } from '../validators';
+import {
+  HeaderNotFoundError
+} from '../errors';
 
-export default (headers: HeadersType, name: string): string | null => {
+export default (headers: HeadersType, name: HeaderNameType): HeaderNameType => {
   validateName(name);
 
   const headerNames = Object.keys(headers);
@@ -17,7 +21,7 @@ export default (headers: HeadersType, name: string): string | null => {
   });
 
   if (!headerName) {
-    return null;
+    throw new HeaderNotFoundError(name);
   }
 
   return headerName;
