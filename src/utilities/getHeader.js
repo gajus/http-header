@@ -8,7 +8,7 @@ import {
 } from '../validators';
 import findHeaderName from './findHeaderName';
 
-export default (headers: HeadersType, name: string): string => {
+export default (headers: HeadersType, name: string): string | null => {
   validateName(name);
 
   const caseSensitiveName = findHeaderName(headers, name);
